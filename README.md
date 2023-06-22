@@ -1,91 +1,141 @@
-# NPDECODES [![Continuous Integration](https://github.com/erickschulz/NPDECODES/workflows/Continuous%20Integration/badge.svg?branch=master)](https://github.com/erickschulz/NPDECODES/actions)
-This repository contains the codes for the homework problems of the recurring course **Numerical Methods for Partial Differential Equations** at [ETH Zurich](https://ethz.ch/en.html). The course treats finite element methods (FEMs) using the C++ library [LehrFEM++](https://github.com/craffael/lehrfempp) and relies on the following material:
-* [lecture notes](https://www.sam.math.ethz.ch/~grsam/NUMPDEFL/NUMPDE.pdf)
-* [homework problems](https://www.sam.math.ethz.ch/~grsam/NUMPDEFL/HOMEWORK/NPDEFL_Problems.pdf)
 
-Moreover, enrolled students can access the [moodle](https://moodle-app2.let.ethz.ch/course/view.php?id=12060) page of the course.
+# **Exercise Overview**
 
-## Requirements
-Currently, only UNIX based operating systems are supported. Moreover, you need to have the following installed on your machine:
-* C++17 compiler (e.g. gcc, clang)
-* CMake (at least VERSION 3.10)
-* python3
-* A reader for .vtk files (e.g. paraview)
-* git (not strictly needed, you could also download the repo as .zip file)
 
-## Getting started
-This section is suited only for your own computer. To build the codes on the student computers of ETH see below. Open a terminal and type
-```
-git clone git@github.com:erickschulz/NPDECODES.git
-cd NPDECODES/
-mkdir build
-cd build/
-cmake ..
-```
-This will install LehrFEM++ and its dependencies into a folder `~/.hunter/`. To build a specific problem, say `TestQuadratureRules`, proceed as follows:
-```
-cd homeworks/TestQuadratureRules/
-make
-```
-This will build from the source files in `NPDECODES/homeworks/TestQuadratureRules/`, where the subfolder `mysolution/` contains templates to be changed by the students. Recompilation is done by invoking `make` again. The following executables are generated:
-* `./TestQuadratureRules_mastersolution`: Runs the mastersolution.
-* `./TestQuadratureRules_test_mastersolution`: Runs unit tests on all important functions of the mastersolution.
-* `./TestQuadratureRules_mysolution`: Runs the students code, i.e. the one in `mysolution/`.
-* `./TestQuadratureRules_test_mysolution`: Runs unit tests the students code, i.e. the one in `mysolution/`.
+### Chapter 1: Second-Order Scalar Elliptic Boundary Value Problems
 
-There is two folders called `homeworks/`. One contains the source files and one contains the executables:
-```
-.
-├── build (was created by you)
-│   ├── homeworks
-│   :   ├── TestQuadratureRules
-│       :   ├── TestQuadratureRules_mastersolution      (executable)
-│           ├── TestQuadratureRules_mysolution          (executable)
-│           ├── TestQuadratureRules_test_mastersolution (executable)
-│           ├── TestQuadratureRules_test_mysolution     (executable)
-│           :
-│
-├── homeworks
-:   ├── TestQuadratureRules
-    :   ├── mastersolution (folder containing source files)
-        ├── mysolution     (folder containing source files, to be modified by you)
-        ├── templates      (folder containing source files)
-        :
-```
+- Theoretical exercises
 
-## On the student computers
-LehrFEM++ is already installed on the linux student computers in the ETH main building. You can even use them remotely by typing in your terminal
-```
-ssh -X <nethz_username>@slab1.ethz.ch
-```
-where `<nethz_username>` has the be replaced by your ETH username. To set up your local repository on the student computers, type:
-```
-cd /tmp
-git clone git@github.com:erickschulz/NPDECODES.git
-mv NPDECODES ~
-cd ~/NPDECODES
-mkdir build
-cd build
-export HUNTER_ROOT=/opt/libs/NumPDE
-cmake ..
-```
-The first four lines are due to limited resources on the student computers. Setting the environment variable `HUNTER_ROOT` tells CMake where to look for the preinstalled libraries. This environment variable is local to your terminal, i.e. has to be redefined if you start a new terminal. Apart from this, you can use the folder `~/NPDECODES` in the same way you would for the approach in the previous section. However, you have only very little memory available on the student computers. We therefore recommend to only build one problem at a time.
+| Number | Topic | Finished |
+| --- | --- | --- |
+| Problem 1-1 | Quadratic Functionals |  |
+| Problem 1-2 | Linear functionals on Sobolev spaces | :heavy_check_mark: |
+| Problem 1-3 |  L∞-Norms Are Bounded by H1 |  |
+| Problem 1-4 | A Poincaré-type inequality |  |
+| Problem 1-5 | A second-order elliptic transmission problem in 1D | :heavy_check_mark: |
+| Problem 1-6 | Heat conduction with non-local BDC | :heavy_check_mark: |
+| Problem 1-7 | A second-order boundary value problem for vector fields | :heavy_check_mark: |
+| Problem 1-8 | A coupled reaction-diffusion problem | 01 |
+| Problem 1-9 |  Second-order Elliptic BVP from weak formulations |  |
 
-## FAQ
 
-### clang: error: unknown argument: '-fcoalesce-templates'
-Mac users, after updating to macOS Catalina 10.15.4, are receiving this error. The workaround is as follows: Navigate  your terminal into the folder `NPDECODES/` and type:
-```
-brew install gcc@8    #install gcc version 8, needs brew to be installed first...
-gcc-8 --version       #check if gcc-8 was installed properly
-g++-8 --version       #check if g++-8 was installed properly
-rm -rf build          #delete the old build folder
-mkdir build           #recreate it
-```
-If this has succeeded, you need to build the codes using the gcc compiler by defining the environment variables `CC` and `CXX`. This is done by navigating a terminal into `NPDECODES/build/` and running:
-```
-export CC=gcc-8
-export CXX=g++-8
-cmake ..
-```
-If the installation is successful, you can than build your codes using `make` as before. Note that the gcc version under OSX usulally just links to clang. However, the procedure above installs the actual gcc compiler.
+
+
+### Chapter 2: Finite Element Methods
+
+| Number | Topic | Finished |
+| --- | --- | --- |
+| Problem 2-1 | Properties of Galerkin solutions | 02 |
+| Problem 2-2 | Transformation of Galerkin Matrices | 03 |
+| Problem 2-3 | Pointwise “Exact” Galerkin Solution | 04 |
+| Problem 2-4 | Linear finite elements for two-point boundary value problems | 05 |
+| Problem 2-5 | Triangular linear FEM for 2D reaction-diffusion BVP | 06 |
+| Problem 2-6 | Incidence matrices of a hybrid 2D mesh |  |
+| Problem 2-7 | Computing the length of the boundary in LEHRFEM++ |  |
+| Problem 2-8 | Introduction to local assembly in LEHRFEM++ | 08 |
+| Problem 2-9 | Handling degrees of freedom (DOFs) in LEHRFEM++ | 09 |
+| Problem 2-10 | Projection onto Gradients |  |
+| Problem 2-11 | Hybrid-mesh Galerkin matrices and right-hand-side vectors | 07 |
+| Problem 2-12 | Testing built-in quadrature rules of LEHRFEM++ |  |
+| Problem 2-13 | Local computations for parametric Lagrangian finite elements |  |
+| Problem 2-14 | Non-conforming Crouzeix-Raviart FEM | 11 |
+| Problem 2-15 | Regularized Neumann Problem |  |
+| Problem 2-16 |  Rigidity of Piecewise Polynomial Continuous Functions | 10 |
+| Problem 2-17 |  |  |
+| Problem 2-18 | Nitsche’s Method for Elliptic BVPs |  |
+
+
+### Chapter 3: FEM - Convergence and Accuracy
+
+| Number | Topic | Finished |
+| --- | --- | --- |
+| Problem 3-1 | Computing Averages over the Boundary |  |
+| Problem 3-2 | Debugging Finite Element Codes |  |
+| Problem 3-3 | Dirichlet BVP with point-evaluation right-hand-side functional |  |
+| Problem 3-4 | A BVP modelling stationary heat conduction |  |
+| Problem 3-5 | Error estimates for traces |  |
+| Problem 3-6 | Projection Onto Constants |  |
+| Problem 3-7 |  |  |
+| Problem 3-8 |  |  |
+| Problem 3-9 |  |  |
+| Problem 3-10 | Parametric Finite Elements |  |
+| Problem 3-11 |  |  |
+| Problem 3-12 |  |  |
+| Problem 3-13 | Computation of Stationary Currents |  |
+| Problem 3-14 |  |  |
+| Problem 3-15 | Asymptotic Convergence of FE Discr. and Interp. Errors |  |
+| Problem 3-16 |  |  |
+| Problem 3-17 |  |  |
+| Problem 3-18 |  |  |
+
+
+
+### Chapter 4: Beyond FEM - Alternative Discretizations
+
+| Number | Topic | Finished |
+| --- | --- | --- |
+| Problem 4-1 | Mehrstellenverfahren for Poisson Equation |  |
+
+
+
+### Chapter 6: Numerical Integration - Single Step Methods
+
+| Number | Topic | Finished |
+| --- | --- | --- |
+| Problem 6-1 | Linear ODE in spaces of matrices |  |
+| Problem 6-2 | Explicit Runge-Kutta Methods |  |
+| Problem 6-3 |  |  |
+| Problem 6-4 | System of Second-Order ODEs |  |
+| Problem 6-5 |  |  |
+| Problem 6-6 |  |  |
+| Problem 6-7 | Initial Condition for Lotka-Volterra ODE |  |
+| Problem 6-8 |  |  |
+| Problem 6-9 |  |  |
+| Problem 6-10 | Symplectic Timestepping for Equations of Motion |  |
+
+
+### Chapter 7: Single Step Methods for Stiff Initial Value Problems
+| Number | Topic | Finished |
+| --- | --- | --- |
+| Problem 7-1 | Implicit Runge-Kutta method |  |
+| Problem 7-2 | Damped precession of a magnetic needle |   |
+| Problem 7-3 | Singly Diagonally Implicit Runge-Kutta Method |  |
+| Problem 7-4 | Semi-implicit Runge-Kutta SSM |  |
+| Problem 7-5 |  |  |
+| Problem 7-6 |  |  |
+| Problem 7-7 |  |  |
+| Problem 7-8 |  |  |
+
+
+
+### Chapter 9: Second-Order Linear Evolution Problems
+
+| Number | Topic | Finished |
+| --- | --- | --- |
+| Problem 9-1 | Implicit Two-Stage Radau RK-SSM for Parabolic IBVPs |  |
+| Problem 9-2 | Implicit Timestepping for Parabolic IBVP |  |
+| Problem 9-3 | Decaying Method-of-Lines Solution with Implicit-Euler Timestepping |  |
+| Problem 9-4 |  |  |
+| Problem 9-5 | Symplectic Timestepping for Wave Equations |  |
+| Problem 9-6 | A mixed elliptic-hyperbolic linear evolution problem |  |
+| Problem 9-7 |  |  |
+| Problem 9-8 |  |  |
+| Problem 9-9 |  |  |
+| Problem 9-10 |  |  |
+| Problem 9-11 |  |  |
+| Problem 9-12 |  |  |
+
+
+
+### Chapter 10: Convection-Diffusion Problems
+
+| Number | Topic | Finished |
+| --- | --- | --- |
+| Problem 10-1 |  |  |
+| Problem 10-2 | Upwind Quadrature Method |  |
+| Problem 10-3 |  |  |
+| Problem 10-4 | Method of Characteristics and Semi-Lagrangian Discretization |  |
+
+
+
+
