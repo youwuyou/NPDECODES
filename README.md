@@ -8,16 +8,16 @@
 
 | Number | Topic | Finished |
 | --- | --- | --- |
-| Problem 1-1 | Quadratic Functionals |  |
+| Problem 1-1 | Quadratic Functionals | :heavy_check_mark: |
 | Problem 1-2 | Linear functionals on Sobolev spaces | :heavy_check_mark: |
-| Problem 1-3 |  L∞-Norms Are Bounded by H1 |  |
+| Problem 1-3 |  L∞-Norms Are Bounded by H1 | :heavy_check_mark: |
 | Problem 1-4 | A Poincaré-type inequality |  |
 | Problem 1-5 | A second-order elliptic transmission problem in 1D | :heavy_check_mark: |
 | Problem 1-6 | Heat conduction with non-local BDC | :heavy_check_mark: |
 | Problem 1-7 | A second-order boundary value problem for vector fields | :heavy_check_mark: |
-| Problem 1-8 | A coupled reaction-diffusion problem | 01 |
-| Problem 1-9 |  Second-order Elliptic BVP from weak formulations |  |
-| Problem 1-10 |  From BVP to Variation Problem |  |
+| Problem 1-8 | A coupled reaction-diffusion problem | :heavy_check_mark: |
+| Problem 1-9 |  Second-order Elliptic BVP from weak formulations | :heavy_check_mark: |
+| Problem 1-10 |  From BVP to Variation Problem | :heavy_check_mark: |
 
 
 
@@ -26,7 +26,7 @@
 
 | Number | Topic | Finished |
 | --- | --- | --- |
-| Problem 2-1 | Properties of Galerkin solutions | 02 |
+| Problem 2-1 | Properties of Galerkin solutions | :heavy_check_mark: |
 | Problem 2-2 | Transformation of Galerkin Matrices | 03 |
 | Problem 2-3 | Pointwise “Exact” Galerkin Solution | 04 |
 | Problem 2-4 | Linear finite elements for two-point boundary value problems | 05 |
@@ -41,7 +41,7 @@
 | Problem 2-13 | Local computations for parametric Lagrangian finite elements |  |
 | Problem 2-14 | Non-conforming Crouzeix-Raviart FEM | 11 |
 | Problem 2-15 | Regularized Neumann Problem |  |
-| Problem 2-16 |  Rigidity of Piecewise Polynomial Continuous Functions | 10 |
+| Problem 2-16 | Rigidity of Piecewise Polynomial Continuous Functions | 10 |
 | Problem 2-17 |  |  |
 | Problem 2-18 | Nitsche’s Method for Elliptic BVPs |  |
 | Problem 2-19 |  |  |
@@ -166,12 +166,12 @@
 | --- | --- | --- |
 | Problem 11-1 | Burgers Equation | 25 |
 | Problem 11-2 | Conservative finite-volume discretization based on Engquist-Osher numerical flux | 26 |
-| Problem 11-3 |  |  |
+| Problem 11-3 | Conservative finite-volume discretization based on Godunov numerical flux |  |
 | Problem 11-4 | Lax-Wendroff Scheme | 27 |
 | Problem 11-5 | Discontinous Galerkin Discretization for 1D Conservation Laws | 29 |
-| Problem 11-6 |  |  |
-| Problem 11-7 |  |  |
+| Problem 11-6 | One-Dimensional Scalar Conservation Law with Empiric Flux |  |
+| Problem 11-7 | Higher-Order Finite Volume Method |  |
 | Problem 11-8 | 2D Finite Volume Method for Advection | 30 |
-| Problem 11-9 |  |  |
+| Problem 11-9 | Non-Linear Conservation Laws with Source Terms |  |
 | Problem 11-10 | Flux-Limited Finite-Volume Methods for Scalar Conservation Laws | 28 |
-| Problem 11-11 |  |  |
+| Problem 11-11 | Conservation laws with non-linear density |  |
