@@ -9,6 +9,7 @@
 #include "transformationofgalerkinmatrices.h"
 
 #include <cassert>
+#include <iostream>
 
 namespace TransformationOfGalerkinMatrices {
 
@@ -38,6 +39,52 @@ std::vector<Eigen::Triplet<double>> transformCOOmatrix(
   int M = n_cols / 2;  // Half the size
   //====================
   // Your code goes here
+  // iterate over triplets of A
+  for (auto& it: A){
+
+    const int k = it.row() + 1;
+    const int l = it.col() + 1;
+    auto val = it.value();
+
+
+    // std::cout<< "debugging! Row: " << k << "; Col: " << l << " Val: "<< val << std::endl;
+
+    // case distinction
+    if (k % 2 == 0 && l % 2 == 0){
+      // k, l even
+      A_t.emplace_back(k/2 -1,l/2 -1, val);
+      A_t.emplace_back(k/2+M -1,l/2+M -1, val);
+      A_t.emplace_back(k/2+M -1,l/2 -1, -val);
+      A_t.emplace_back(k/2 -1,l/2+M -1, -val);
+    }
+    else if(k % 2 != 0  && l % 2 != 0){
+      // k, l odd
+      A_t.emplace_back((k+1)/2 -1,(l+1)/2 -1, val);
+      A_t.emplace_back((k+1)/2+M -1,(l+1)/2+M -1, val);
+      A_t.emplace_back((k+1)/2 -1,(l+1)/2+M -1, val);
+      A_t.emplace_back((k+1)/2+M -1,(l+1)/2 -1, val);
+    }
+
+    else if (k % 2 == 0 && l % 2 != 0){
+      // k even, l odd
+      A_t.emplace_back((k)/2 -1,(l+1)/2 -1, val);
+      A_t.emplace_back((k)/2 -1,(l+1)/2+M -1, val);
+      A_t.emplace_back((k)/2+M -1,(l+1)/2+M -1, -val);
+      A_t.emplace_back((k)/2+M -1,(l+1)/2 -1, -val);
+    }
+
+    else{
+      // k odd, l even
+      A_t.emplace_back((k+1)/2 -1,(l)/2 -1, val);
+      A_t.emplace_back((k+1)/2+M -1,(l)/2+M -1, -val);
+      A_t.emplace_back((k+1)/2+M -1,(l)/2 -1, val);
+      A_t.emplace_back((k+1)/2 -1,(l)/2+M -1, -val);
+
+    }
+  }
+
+
+
   //====================
   return A_t;
 }

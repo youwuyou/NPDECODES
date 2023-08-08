@@ -9,6 +9,8 @@
 #include "teelaplrobinassembly.h"
 
 #include <cassert>
+#include <lf/fe/fe.h>
+#include <lf/mesh/mesh.h>
 
 namespace ErrorEstimatesForTraces {
 
@@ -97,12 +99,42 @@ Eigen::VectorXd solveBVP(
 double bdFunctionalEval(
     std::shared_ptr<lf::uscalfe::FeSpaceLagrangeO1<double>> &fe_space,
     Eigen::VectorXd &coeff_vec) {
-  double bd_functional_val = 0;
+    double bd_functional_val = 0;
 
-  //====================
-  // Your code goes here
-  //====================
-  return bd_functional_val;
+    //====================
+    // Your code goes here
+    // step 1: obtain the mesh
+    auto mesh_ptr = fe_space->Mesh();
+    const lf::assemble::DofHandler &dofh{fe_space->LocGlobMap()};
+
+    // step 2: find out boundary entities on edges
+    auto bd_flags{lf::mesh::utils::flagEntitiesOnBoundary(mesh_ptr, 1)};
+
+    // step 3:iterate over all edges, where codim of edge in R^2 is 1
+    for (const lf::mesh::Entity *edge: mesh_ptr->Entities(1)){
+
+        // only on the boundary
+        if (bd_flags(*edge)){
+
+            // update end points
+            const lf::geometry::Geometry *geo_ptr = edge->Geometry();
+            auto endpoints = lf::geometry::Corners(*geo_ptr);
+
+            // update edge length
+            double dS = (endpoints.col(1) - endpoints.col(0)).norm();
+
+            // this returns an array of index number in {0, ..., NumDofs()-1}
+            // for the global shape functions covering a particular entity
+            auto dof_idx = dofh.GlobalDofIndices(*edge);
+
+            // add contribution to linear integral
+            bd_functional_val +=  0.5*dS*(coeff_vec(dof_idx[0]) + coeff_vec(dof_idx[1]));
+
+        }
+    }
+
+    //====================
+    return bd_functional_val;
 }
 /* SAM_LISTING_END_9 */
 

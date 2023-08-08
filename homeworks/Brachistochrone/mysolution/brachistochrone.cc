@@ -176,6 +176,7 @@ Eigen::Matrix<double, Eigen::Dynamic, 2> sourcefn2(
     // store values for f_vec
     f_vec(i,0) = f(norm, uh2l);
     f_vec(i,1) = f(norm, uh2r);
+
   }
 
   // ===================================================================
@@ -189,10 +190,12 @@ Eigen::SparseMatrix<double> matR(
   const Eigen::Index M = knots.cols() - 1;
   // Reserve enough space for the tridiagonal matrix
   Eigen::SparseMatrix<double> R(M - 1, M - 1);
+
   R.reserve(Eigen::RowVectorXi::Constant(M - 1, 3));
   // ===================================================================
   // Your code here
   // ===================================================================
+
   // Clean the CRS format
   R.makeCompressed();
   return R;
