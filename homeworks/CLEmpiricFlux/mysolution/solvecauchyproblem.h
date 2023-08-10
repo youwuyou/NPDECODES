@@ -46,6 +46,25 @@ Eigen::VectorXd computeInitVec(const UniformCubicSpline &f, FUNCTOR &&u0,
   Eigen::VectorXd mu0;
   //====================
   // Your code goes here
+
+  // Preparation. use findSupport function
+  Eigen::Vector2d initsupp;
+  initsupp << -1.0, 1.0;
+  Eigen::Vector2d support_at_T = findSupport(f, initsupp, T);
+
+  // IMPORTANT! Since the support of {x ↦ u(x,t)} may not contain the support of u₀!
+  const double left_bound  = std::min(support_at_T[0], -1.0);
+  const double right_bound = std::max(support_at_T[1], 1.0);
+
+  // I). First determine two integers m⁻, m⁺ ∈ ℤ s.t.
+  // ∪ supp u(·, t) ⊂ [m⁻h, m⁺h]   for all t in [0,T]
+  int m_minus  = left_bound/h;
+  int m_plus   = right_bound/h;
+
+  // II). Compute the µ0 vector to be returned
+  int bound = m_plus - m_minus + 1;
+  const Eigen::VectorXd x = Eigen::VectorXd::LinSpaced(bound, m_minus*h, m_plus*h);
+  mu0 = x.unaryExpr(u0);
   //====================
   return mu0;
 }

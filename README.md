@@ -160,7 +160,7 @@
 | Problem 11-3 | Conservative finite-volume discretization based on Godunov numerical flux |  |
 | Problem 11-4 | Lax-Wendroff Scheme | 27 |
 | Problem 11-5 | Discontinous Galerkin Discretization for 1D Conservation Laws | 29 |
-| Problem 11-6 | One-Dimensional Scalar Conservation Law with Empiric Flux (Summer 2019) |  |
+| Problem 11-6 | One-Dimensional Scalar Conservation Law with Empiric Flux (Summer 2019) | :heavy_check_mark: |
 | Problem 11-7 | Higher-Order Finite Volume Method (Winter 2020) |  |
 | Problem 11-8 | 2D Finite Volume Method for Advection | 30 |
 | Problem 11-9 | Non-Linear Conservation Laws with Source Terms (Summer 2020) |  |

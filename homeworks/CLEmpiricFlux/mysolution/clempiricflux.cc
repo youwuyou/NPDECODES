@@ -55,6 +55,40 @@ double GodunovFlux::operator()(double v, double w) const {
   double result;
   //====================
   // Your code goes here
+
+  if (v >= w){
+      // case 1: shock wave (v >= w)
+      // compute the slope ṡ
+      // double s_dot = (_f(w) - _f(v))/(w - v);
+
+      // if (s_dot > 0){
+      //   result = _f(v);
+      // } 
+      // else{
+      //   result = _f(w);
+      // }
+
+      // alternatively
+      result = std::max(_f(v), _f(w));
+    }
+  else {
+    // case 2: rarefaction wave (v < w)
+    if (_f.derivative(v) > 0){
+      result = _f(v);
+    }
+    else if (_f.derivative(w) < 0){
+      result = _f(w);
+    }
+    else{
+      // use findRoots function to find root of df in interval [v,w]
+      // use lambda expression, df: [v,w]→ ℝ
+      auto df = [=](double x)->double{   return _f.derivative(x); };
+      double root = findRoots(v, w, df);
+      result = _f(root);
+    }
+
+  }
+
   //====================
   return result;
 }
