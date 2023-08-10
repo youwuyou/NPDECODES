@@ -116,7 +116,7 @@
 | Problem 9-3 | Decaying Method-of-Lines Solution with Implicit-Euler Timestepping | 17 |
 | Problem 9-4 |  |  |
 | Problem 9-5 | Symplectic Timestepping for Wave Equations |  |
-| Problem 9-6 | A mixed elliptic-hyperbolic linear evolution problem (Summer 2019) | 20 |
+| Problem 9-6 | A mixed elliptic-hyperbolic linear evolution problem (Summer 2019) | :heavy_check_mark: |
 | Problem 9-7 | Absorbing Boundary Conditions (ABCs) for the 2D Wave Equation (Winter 2020) |  |
 | Problem 9-8 | Non-linear Schrödinger Equation with Cubic Non-Linearity | 19 |
 | Problem 9-9 |  |  |
