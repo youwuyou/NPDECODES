@@ -52,7 +52,7 @@
 | Number | Topic | Finished |
 | --- | --- | --- |
 | Problem 2-17 | Local Computations for Convection Bilinear Form |  |
-| Problem 2-18 | Nitsche’s Method for Elliptic BVPs (Winter 2022) |  |
+| Problem 2-18 | Nitsche’s Method for Elliptic BVPs (Winter 2022) | :heavy_check_mark: |
 | Problem 2-19 | Lagrangian Finite Elements on Criss-Cross Meshes |  |
 | Problem 2-20 | DofHandler and Assembly |  |
 
@@ -84,7 +84,7 @@
 | Problem 3-15 | Asymptotic Convergence of FE Discr. and Interp. Errors |  |
 | Problem 3-16 | Non-conforming Crouzeix-Raviart FEM: Theoretical aspects (Summer 2021) |  |
 | Problem 3-17 | Residual-Based A-Posteriori Error Estimator (Summer 2021) |  |
-| Problem 3-18 | Hierarchical Local A-Posteriori Error Estimator (Winter 2022) |  |
+| Problem 3-18 | Hierarchical Local A-Posteriori Error Estimator (Winter 2022) | :heavy_check_mark: |
 | Problem 3-19 | Convergence of Finite-Element Solutions |  |
 
 
@@ -171,7 +171,7 @@
 | Number | Topic | Finished |
 | --- | --- | --- |
 | Problem 11-10 | Flux-Limited Finite-Volume Methods for Scalar Conservation Laws | 28 |
-| Problem 11-11 | Conservation laws with non-linear density (Winter 2022) |  |
+| Problem 11-11 | Conservation laws with non-linear density (Winter 2022) | :heavy_check_mark: |
 
 
 ---
