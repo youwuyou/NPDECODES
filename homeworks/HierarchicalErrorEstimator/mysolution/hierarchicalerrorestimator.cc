@@ -34,10 +34,45 @@ Eigen::VectorXd trfLinToQuad(
   Eigen::VectorXd nu(dh_quad.NumDofs());
 //====================
 // Your code goes here
+
+  // // go through all nodes of mesh
+  int codim_vertices = 2;   // d=2
+  for (auto *node: mesh.Entities(codim_vertices)){
+
+    // obtain indices of GSF on nodes for linear FE space
+    nonstd::span<const gdof_idx_t> linear_dof_idx{dh_lin.GlobalDofIndices(*node)};
+
+    // obtain indices of GSF on nodes for quadratic FE space
+    nonstd::span<const gdof_idx_t> quad_dof_idx{dh_quad.GlobalDofIndices(*node)};
+
+    // direct assignment!
+    nu[quad_dof_idx[0]] = mu[linear_dof_idx[0]];
+  }
+
+  // // go through all edges of mesh, interpolate from linear to quad space
+  int codim_edges    = 1;   // d=2
+  for (auto* edge: mesh.Entities(codim_edges)){
+
+    // obtain indices of GSF on edges for linear FE space
+    nonstd::span<const gdof_idx_t> linear_dof_idx{dh_lin.GlobalDofIndices(*edge)};
+
+    // obtain indices of GSF on edges for quadratic FE space
+
+    // NOTE: use InteriorGlobalDofIndices to obtain indices for nodes that are contained in this edge!
+    // nonstd::span<const gdof_idx_t> quad_dof_idx{dh_quad.GlobalDofIndices(*edge)};  <- WRONG!
+    nonstd::span<const gdof_idx_t> quad_dof_idx{dh_quad.InteriorGlobalDofIndices(*edge)};
+
+    // for every edge, use values on endpoints and assign values to quad space directly
+    // use 1/2(vh(p1) + vh(p2)) for edge GSF value interpolation
+    nu[quad_dof_idx[0]] = 0.5*(mu[linear_dof_idx[0]] + mu[linear_dof_idx[1]]);
+
+  }
+
 //====================
   return nu;
 }
 /* SAM_LISTING_END_3 */
+
 
 std::tuple<double, double, double> solveAndEstimate(
     std::shared_ptr<const lf::mesh::Mesh> mesh_p) {

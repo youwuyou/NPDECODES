@@ -126,6 +126,7 @@ Eigen::VectorXd compHierSurplusSolution(
     std::shared_ptr<const lf::uscalfe::FeSpaceLagrangeO1<double>> fes_lin_p,
     std::shared_ptr<const lf::uscalfe::FeSpaceLagrangeO2<double>> fes_quad_p,
     const Eigen::VectorXd &mu) {
+
   // References to FE space
   const lf::uscalfe::FeSpaceLagrangeO2<double> &quad_space{*fes_quad_p};
   const lf::uscalfe::FeSpaceLagrangeO1<double> &lfe_space{*fes_lin_p};
@@ -148,6 +149,61 @@ Eigen::VectorXd compHierSurplusSolution(
   Eigen::VectorXd quad_surplus(N_qdofs);
 //====================
 // Your code goes here
+
+  // STEP 1: assemble full Galerkin matrix for quadratic FE space
+  lf::assemble::COOMatrix<double> A(N_qdofs, N_qdofs);
+  lf::fe::DiffusionElementMatrixProvider elmat_builder(fes_quad_p, mf_alpha);
+  lf::assemble::AssembleMatrixLocally(0, dh_quad, dh_quad, elmat_builder, A);
+
+  // STEP 2: assemble of RHS vector in quadratic FE space
+  Eigen::VectorXd phi(N_qdofs);
+  lf::uscalfe::ScalarLoadElementVectorProvider elvec_builder(fes_quad_p, mf_f);
+  lf::assemble::AssembleVectorLocally(0, dh_quad, elvec_builder, phi);
+
+  // STEP 3: compute residual vector
+  // given a vector mu in linear FE space, obtain its interpolated representation in quadratic FE space
+  auto A_temp = A.makeSparse();
+  Eigen::VectorXd mu_quad = trfLinToQuad(fes_lin_p, fes_quad_p, mu);
+  // Eigen::VectorXd residual_quad = phi + A.MatVecMult(-1.0, mu_quad);
+  Eigen::VectorXd residual_quad = phi - A_temp*mu_quad;
+
+  // STEP 4: compute argumented marix for the surplus space
+  lf::mesh::utils::CodimMeshDataSet<bool> bd_flags{lf::mesh::utils::flagEntitiesOnBoundary(mesh_p, 1)};
+
+  // iterating over all edges, records index of GFS to be dropped
+  std::vector<bool> dropped_ed(N_qdofs, false);
+  for (auto* edge: mesh.Entities(1)){
+    nonstd::span<const lf::assemble::gdof_idx_t> qf_dof_idx{ dh_quad.GlobalDofIndices(*edge)};
+
+    // NOTE: number in lehrfem from nodes -> edges, first two GSF are of endpoints on an edge
+    dropped_ed[qf_dof_idx[0]] = true;
+    dropped_ed[qf_dof_idx[1]] = true;
+
+    // drop the edge only if it locates on the boundary! Keep all other basis functions
+    if (bd_flags(*edge)){
+     dropped_ed[qf_dof_idx[2]] = true;
+    }
+  }
+
+  // eliminate corresponding entries of the Galerkin matrix
+  auto selector = [=](lf::assemble::gdof_idx_t idx)->bool{return dropped_ed[idx];};
+  dropMatrixRowsColumns(selector, A);
+
+  // eliminate corresponding entries of the rhs residual vector
+  for (int j = 0; j < N_qdofs; ++j){
+    if (dropped_ed[j] == 1){
+      residual_quad[j] = 0.0;
+    }
+  }
+  
+  // STEP 5: solve the LSE
+  Eigen::SparseMatrix<double> A_crs = A.makeSparse();
+  Eigen::SparseLU<Eigen::SparseMatrix<double>> solver;
+  solver.compute(A_crs);
+
+  quad_surplus = solver.solve(residual_quad);
+
+
 //====================
   return quad_surplus;
 }

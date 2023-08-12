@@ -58,6 +58,24 @@ double rhoInverse(double u, double z0, RHOFUNCTOR &&rho, DRHOFUNCTOR &&drho,
                   double atol = 1.0E-10, double rtol = 1.0E-5) {
   //====================
   // Your code goes here
+  double error, norm;
+
+  do{
+    // ?? inverse of drho?
+    double update = -drho(z0)*rho(z0);
+
+    // update z0, where at the first step it was the initial guess
+    z0 = z0 + update;
+
+    // compute error
+    error = rho(z0) - u;
+
+    // for relative error comparison
+    norm = std::abs(z0);
+
+  }while (error >= atol && error/norm >= rtol);
+
+
   //====================
   return z0;
 }
@@ -73,6 +91,35 @@ Eigen::VectorXd semiDiscreteRhs(const Eigen::VectorXd &mu,
 
   //====================
   // Your code goes here
+
+
+  // mesh width h
+  std::pair<double, double> limits = prb.domain();
+  double h = (limits.second - limits.first) / N;
+
+  // define the functor Rusanov numerical flux
+  // TODO: change flux definition, used just g 
+  auto F = [=](double v, double w)->double{ 
+
+    auto rho = [&prb](double v) { return prb.rho(v); };
+    auto drho = [&prb](double v) { return prb.drho(v); };
+
+
+    double rho_inv_v = rhoInverse(v, 1.0, rho, drho);
+    double rho_inv_w = rhoInverse(w, 1.0, rho, drho);
+
+
+    double result = 0.5*(prb.g(rho_inv_v) + prb.g(rho_inv_w)) - 0.5*(w-v) * std::max(std::abs(prb.dg(rho_inv_v)), std::abs(prb.dg(rho_inv_w)));
+    return result;
+  };
+
+  rhs[0] = -1.0/h*(F(mu[0] , mu[1]) - F(mu[0], mu[0]));
+
+  for (int j = 1; j < N-1; ++j){
+    rhs[j] = -1.0/h*(F(mu[j] , mu[j+1]) - F(mu[j-1], mu[j]));
+  }
+  rhs[N-1] = -1.0/h*(F(mu[N-1] , mu[N-1]) - F(mu[N-2], mu[N-1]));
+
   //====================
 
   return rhs;
@@ -115,6 +162,17 @@ Eigen::VectorXd solveCauchyPrb(
   for (int k = 0; k < M; ++k) {
     //====================
     // Your code goes here
+
+    Eigen::VectorXd rhs = semiDiscreteRhs(mu, zeta, prb);
+
+    // FIXME: not sure how to use this rhs vector
+
+    double k1 = f(t, u + dt);
+    double k2 = f(t+1/3*dt, u + dt*1/3*k1);
+    double k3 = f(t+2/3*dt, u + dt*2/3*k2);
+
+    zeta = zeta + dt*(0.25*k1 + 3/4*k2);
+
     //====================
 
     // record solution after current time step
